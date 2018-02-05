@@ -1,6 +1,7 @@
 clear all; close all;
 clc;
 rng default;
+
 %% Generating Clusters
 % Class A
 mu_A = [5 10];
