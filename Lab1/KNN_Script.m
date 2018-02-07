@@ -1,7 +1,6 @@
 clear all; close all;
 clc;
 rng default;
-
 %% Generating Clusters
 % Class A
 mu_A = [5 10];
@@ -27,14 +26,20 @@ mu_E = [10 5];
 cov_E = [10 -5; -5 20];
 E = mvnrnd(mu_E, cov_E, 150);
 %% Discretize the feature space
-N = 30;
-M = 30;
-featureSpaceAB = zeros(N,M);
-featureSpaceCDE = zeros(N,M);
+N = 50;
+M = 50;
+dt = 1; % change this to 0.1
+
+x_vector = -10:dt:N;
+y_vector = -10:dt:M;
+featureSpaceAB = zeros(length(x_vector), length(y_vector));
+featureSpaceCDE = zeros(length(x_vector), length(y_vector));
 k = 5;
-for i=1:N
-    for j = 1:M
-        pos = [i j];
+
+for i=1:length(x_vector)
+    for j = 1:length(y_vector)
+        pos = [x_vector(i) y_vector(j)];
+        
         d_pos_A = KNN( pos, k, A );
         d_pos_B = KNN( pos, k, B );
         d_pos_C = KNN( pos, k, C );
@@ -61,33 +66,33 @@ for i=1:N
 end
 %%
 figure;
+contourf(x_vector, y_vector, featureSpaceAB)
+hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
 scatter(B(:,1), B(:,2), 'filled')
 hold on;
-imcontour(featureSpaceAB)
+plot_ellipse(cov_A, mu_A);
 hold on;
-error_ellipse(cov_A, 'mu', mu_A, 'style', '-r')
-hold on;
-error_ellipse(cov_B, 'mu', mu_B, 'style', '-b')
+plot_ellipse(cov_B, mu_B);
 hold on;
 title('Plot for Class A and Class B')
-legend('Class A','Class B')
+legend('Boundary', 'Class A','Class B')
 %%
 figure;
+contourf(x_vector, y_vector, featureSpaceCDE)
+hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
 scatter(D(:,1), D(:,2), 'filled')
 hold on;
 scatter(E(:,1), E(:,2), 'filled')
 hold on;
-imcontour(featureSpaceCDE, 4)
+plot_ellipse(cov_C, mu_C);
 hold on;
-error_ellipse(cov_C, 'mu', mu_C, 'style', '-r')
+plot_ellipse(cov_D, mu_D);
 hold on;
-error_ellipse(cov_D, 'mu', mu_D, 'style', '-b')
-hold on;
-error_ellipse(cov_E, 'mu', mu_E, 'style', '-g')
+plot_ellipse(cov_E, mu_E);
 hold on;
 title('Plot for Class C, Class D, Class E')
-legend('Class C','Class D', 'Class E')
+legend('Boundary','Class C','Class D', 'Class E')

@@ -18,9 +18,9 @@ scatter(A(:,1), A(:,2), 'filled')
 hold on;
 scatter(B(:,1), B(:,2), 'filled')
 hold on;
-error_ellipse(cov_A, 'mu', mu_A, 'style', '-r')
+plot_ellipse(cov_A, mu_A);
 hold on;
-error_ellipse(cov_B, 'mu', mu_B, 'style', '-b')
+plot_ellipse(cov_B, mu_B);
 hold on;
 title('Plot for Class A and Class B')
 legend('Class A','Class B')
@@ -48,11 +48,11 @@ scatter(D(:,1), D(:,2), 'filled')
 hold on;
 scatter(E(:,1), E(:,2), 'filled')
 hold on;
-error_ellipse(cov_C, 'mu', mu_C, 'style', '-r')
+plot_ellipse(cov_C, mu_C);
 hold on;
-error_ellipse(cov_D, 'mu', mu_D, 'style', '-b')
+plot_ellipse(cov_D, mu_D);
 hold on;
-error_ellipse(cov_E, 'mu', mu_E, 'style', '-g')
+plot_ellipse(cov_E, mu_E);
 hold on;
 title('Plot for Class C, Class D, Class E')
 legend('Class C','Class D', 'Class E')
