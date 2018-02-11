@@ -28,12 +28,12 @@ cov_E = [10 -5; -5 20];
 E = mvnrnd(mu_E, cov_E, 150);
 
 %% Nearest Neighbor
-N = 30;
-M = 30;
+N = 36;
+M = 36;
 
 dt = 0.1;
-x_vector = -5:dt:N;
-y_vector = -5:dt:M;
+x_vector = -7:dt:N;
+y_vector = -7:dt:M;
 
 featureSpaceAB = zeros(length(x_vector), length(y_vector));
 featureSpaceCDE = zeros(length(x_vector), length(y_vector));
@@ -70,7 +70,7 @@ end
 
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceAB)
+contour(x_vector, y_vector, featureSpaceAB)
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -84,7 +84,7 @@ title('Plot for Class A and Class B')
 legend('Boundary', 'Class A','Class B')
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceCDE)
+contour(x_vector, y_vector, featureSpaceCDE)
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;

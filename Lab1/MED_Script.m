@@ -69,7 +69,7 @@ end
 
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceAB)
+contour(x_vector, y_vector, featureSpaceAB)
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -83,7 +83,7 @@ title('Plot for Class A and Class B')
 legend('Boundary', 'Class A','Class B')
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceCDE)
+contour(x_vector, y_vector, featureSpaceCDE)
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
