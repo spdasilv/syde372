@@ -98,3 +98,5 @@ plot_ellipse(cov_E, mu_E);
 hold on;
 title('Plot for Class C, Class D, Class E')
 legend('Boundary','Class C','Class D', 'Class E')
+%% Error Analysis
+errorMAP;
