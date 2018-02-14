@@ -1,6 +1,6 @@
 clear all; close all;
 clc;
-rng default;
+rng(4);
 %% Generating Clusters
 % Class A
 mu_A = [5 10];
@@ -33,7 +33,7 @@ P_B = 200/400;
 P_C = 100/450;
 P_D = 200/450;
 P_E = 150/450;
-
+%%
 N = 36;
 M = 36;
 dt = 0.1;
@@ -96,12 +96,54 @@ plot_ellipse(cov_D, mu_D);
 hold on;
 plot_ellipse(cov_E, mu_E);
 hold on;
-<<<<<<< HEAD
 title('MAP Boundary for Class C, Class D, Class E')
 legend('Boundary','Class C','Class D', 'Class E')
-=======
-title('Plot for Class C, Class D, Class E')
-legend('Boundary','Class C','Class D', 'Class E')
 %% Error Analysis
-errorMAP;
->>>>>>> 254004e17cfe99f2946fd6a52a1831ceaea9fb4a
+% errorMAP;
+
+%%
+listA = 0;
+listB = 0;
+
+actual = 2;
+
+for i=1:length(A)
+    pos = B(i,:);
+    current = getMAPClass(pos, mu_A, cov_A, P_A, mu_B, cov_B, P_B);
+    
+    if current == actual
+        listA = listA + 1;
+    else
+        listB = listB + 1;21    
+    end
+end
+listA
+listB
+
+%%
+
+listCC = 0;
+listCD = 0;
+listCE = 0;
+
+class = E;
+
+for i=1:length(class)
+    pos = class(i,:);
+    
+    MAP_CD = getMAPClass(pos, mu_C, cov_C, P_C, mu_D, cov_D, P_D);
+    MAP_CE = getMAPClass(pos, mu_C, cov_C, P_C, mu_E, cov_E, P_E);
+    MAP_DE = getMAPClass(pos, mu_D, cov_D, P_D, mu_E, cov_E, P_E);
+
+    if MAP_CD == 1 && MAP_CE ==1
+        listCC = listCC + 1; 
+    elseif MAP_CD == 2 && MAP_DE ==1
+        listCD = listCD + 1; 
+    elseif MAP_CE == 2 && MAP_DE ==2
+        listCE = listCE + 1; 
+    end
+    
+end
+listCC
+listCD
+listCE

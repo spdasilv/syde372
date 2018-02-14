@@ -113,9 +113,9 @@ listAB = 0;
 listBB = 0;
 
 k = 1;
-class = X_B;
-ac = 'B';
-nac = 'A';
+class = X_A;
+ac = 'A';
+nac = 'B';
 
 for i=1:length(class)
     pos = class(i,:);
@@ -148,4 +148,39 @@ listAB
 P_A = listAB/(listAA + listAB)
 % P_B = listBA/(listBB + listBA)
 
+%% For Classes C, D and E
+X_C = mvnrnd(mu_C, cov_C, 100);
+X_D = mvnrnd(mu_D, cov_D, 200);
+X_E = mvnrnd(mu_E, cov_E, 150);
 
+listCC = 0;
+listCD = 0;
+listCE = 0;
+
+class = X_E;
+
+for i=1:length(class)
+    pos = class(i,:);
+    actual = ''; current = '';
+    
+    d_pos_xC = NN( pos, C );
+    d_pos_xD = NN( pos, D );
+    d_pos_xE = NN( pos, E );
+    
+    minCurrent = min([d_pos_xC  d_pos_xD  d_pos_xE]);
+    
+    if minCurrent == d_pos_xC
+        current = ac;
+        listCC = listCC + 1;
+    elseif minCurrent == d_pos_xD
+        current = nac;
+        listCD = listCD + 1;
+    elseif minCurrent == d_pos_xE
+        current = nac2;
+        listCE = listCE + 1;
+    end
+end
+listCC
+listCD
+listCE
+P_A = (listCD + listCE)/(listCC + listCD + listCE)

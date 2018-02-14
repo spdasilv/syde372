@@ -1,6 +1,6 @@
 clear all; close all;
 clc;
-rng default;
+rng(4);
 %% Generating Clusters
 % Class A
 mu_A = [5 10];
@@ -101,9 +101,15 @@ legend('', 'Class C','Class D', 'Class E')
 
 
 %% ERROR CALCULATION STUFF
-rng(2);
+% Random Speed value
+rng(7);
+
 X_A = mvnrnd(mu_A, cov_A, 200);
 X_B = mvnrnd(mu_B, cov_B, 200);
+
+X_C = mvnrnd(mu_C, cov_C, 100);
+X_D = mvnrnd(mu_D, cov_D, 200);
+X_E = mvnrnd(mu_E, cov_E, 150);
 
 %%
 listAA = 0;
@@ -142,7 +148,66 @@ for i=1:length(class)
         listAB = listAB + 1;
     end
 end
-listAA
-listAB
+listAA;
+listAB;
 P_A = listAB/(listAA + listAB)
 % P_B = listBA/(listBB + listBA)
+
+%%
+listCC = 0;
+listCD = 0;
+listCE = 0;
+
+class = X_D;
+ac = 'D';
+nac = 'C';
+nac2 = 'E';
+
+k = 5;
+
+for i=1:length(class)
+    pos = class(i,:);
+    actual = ''; current = '';
+    
+    %d_pos_C = KNN( pos, k, C );
+    %d_pos_D = KNN( pos, k, D );
+    %d_pos_E = KNN( pos, k, E );
+    
+    d_pos_xC = KNN( pos, k, X_C );
+    d_pos_xD = KNN( pos, k, X_D );
+    d_pos_xE = KNN( pos, k, X_E );
+    
+    %minActual = min([d_pos_C  d_pos_D  d_pos_E]);
+    minCurrent = min([d_pos_xC  d_pos_xD  d_pos_xE]);
+    
+%     if minActual == d_pos_C
+%         actual = ac;
+%     elseif minActual == d_pos_D
+%         actual = nac;
+%     elseif minActual == d_pos_E
+%         actual = nac2;
+%     end
+%     
+    if minCurrent == d_pos_xC
+        current = ac;
+    elseif minCurrent == d_pos_xD
+        current = nac;
+    elseif minCurrent == d_pos_xE
+        current = nac2;
+    end
+    
+    switch current
+        case ac
+            listCC = listCC + 1;
+        case nac
+            listCD = listCD + 1;
+        case nac2
+            listCE = listCE + 1;
+        otherwise
+            disp('nope');
+    end
+end
+listCC
+listCD
+listCE
+P_A = (listCD + listCE)/(listCC + listCD + listCE)
