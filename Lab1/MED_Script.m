@@ -1,6 +1,6 @@
 clear all; close all;
 clc;
-rng default;
+rng(4);
 %% Generating Clusters
 % Class A
 mu_A = [5 10];
@@ -31,8 +31,8 @@ N = 30;
 M = 30;
 
 dt = 0.1;
-x_vector = -5:dt:N;
-y_vector = -5:dt:M;
+x_vector = -8:dt:N;
+y_vector = -8:dt:M;
 
 featureSpaceAB = zeros(length(x_vector), length(y_vector));
 featureSpaceCDE = zeros(length(x_vector), length(y_vector));
@@ -69,7 +69,7 @@ end
 
 %%
 figure;
-contour(x_vector, y_vector, featureSpaceAB)
+contourf(x_vector, y_vector, featureSpaceAB')
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -79,11 +79,11 @@ plot_ellipse(cov_A, mu_A);
 hold on;
 plot_ellipse(cov_B, mu_B);
 hold on;
-title('Plot for Class A and Class B')
+title('MED Decision Boundary for Class A and Class B')
 legend('Boundary', 'Class A','Class B')
 %%
 figure;
-contour(x_vector, y_vector, featureSpaceCDE)
+contourf(x_vector, y_vector, featureSpaceCDE')
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
@@ -97,5 +97,5 @@ plot_ellipse(cov_D, mu_D);
 hold on;
 plot_ellipse(cov_E, mu_E);
 hold on;
-title('Plot for Class C, Class D, Class E')
+title('MED Decision Boundary Class C, Class D, Class E')
 legend('Boundary','Class C','Class D', 'Class E')

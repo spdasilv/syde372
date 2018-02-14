@@ -70,7 +70,7 @@ end
 
 %%
 figure;
-contour(x_vector, y_vector, featureSpaceAB)
+contourf(x_vector, y_vector, featureSpaceAB')
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -80,11 +80,11 @@ plot_ellipse(cov_A, mu_A);
 hold on;
 plot_ellipse(cov_B, mu_B);
 hold on;
-title('Plot for Class A and Class B')
+title('NN Boundary for Class A and Class B')
 legend('Boundary', 'Class A','Class B')
 %%
 figure;
-contour(x_vector, y_vector, featureSpaceCDE)
+contourf(x_vector, y_vector, featureSpaceCDE')
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
@@ -98,9 +98,54 @@ plot_ellipse(cov_D, mu_D);
 hold on;
 plot_ellipse(cov_E, mu_E);
 hold on;
-title('Plot for Class C, Class D, Class E')
+title('NN Boundary for Class C, Class D, Class E')
 legend('Boundary','Class C','Class D', 'Class E')
 
+%% ERROR CALCULATION STUFF
+rng(2);
+X_A = mvnrnd(mu_A, cov_A, 200);
+X_B = mvnrnd(mu_B, cov_B, 200);
 
+%%
+listAA = 0;
+listBA = 0;
+listAB = 0;
+listBB = 0;
+
+k = 1;
+class = X_B;
+ac = 'B';
+nac = 'A';
+
+for i=1:length(class)
+    pos = class(i,:);
+    
+    d_pos_A = NN( pos, A );
+    d_pos_B = NN( pos, B );
+    
+    d_pos_xA = NN( pos, X_A );
+    d_pos_xB = NN( pos, X_B );
+    
+    actual = nac;
+    if d_pos_A < d_pos_B
+        actual = ac;
+    end
+    
+    current = nac;
+    if d_pos_xA < d_pos_xB
+        current = ac;
+    end
+    
+    if eq(actual, current)
+        listAA = listAA + 1;
+    else
+        listAB = listAB + 1;
+    end
+end
+
+listAA
+listAB
+P_A = listAB/(listAA + listAB)
+% P_B = listBA/(listBB + listBA)
 
 

@@ -34,8 +34,8 @@ P_C = 100/450;
 P_D = 200/450;
 P_E = 150/450;
 
-N = 50;
-M = 50;
+N = 36;
+M = 36;
 dt = 0.1;
 
 x_vector = -10:dt:N;
@@ -68,7 +68,7 @@ for i=1:length(x_vector)
 end
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceAB)
+contourf(x_vector, y_vector, featureSpaceAB')
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -78,11 +78,11 @@ plot_ellipse(cov_A, mu_A);
 hold on;
 plot_ellipse(cov_B, mu_B);
 hold on;
-title('Plot for Class A and Class B')
+title('MAP Boundary for Class A and Class B')
 legend('Boundary', 'Class A','Class B')
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceCDE)
+contourf(x_vector, y_vector, featureSpaceCDE')
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
@@ -96,5 +96,5 @@ plot_ellipse(cov_D, mu_D);
 hold on;
 plot_ellipse(cov_E, mu_E);
 hold on;
-title('Plot for Class C, Class D, Class E')
+title('MAP Boundary for Class C, Class D, Class E')
 legend('Boundary','Class C','Class D', 'Class E')
