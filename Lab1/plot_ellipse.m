@@ -13,5 +13,5 @@ function pts =  plot_ellipse(cov, mean)
     x = mean(1); y = mean(2);
 
     pts = [x;y]*ones(size(ang)) + [cos(theta) -sin(theta); sin(theta) cos(theta)]*[cos(ang)*a; sin(ang)*b];
-    plot( pts(1,:), pts(2,:), 'LineWidth', 3);
+    plot( pts(1,:), pts(2,:), 'LineWidth', 0.3);
 end

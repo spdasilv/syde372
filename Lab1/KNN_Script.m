@@ -1,30 +1,5 @@
-clear all; close all;
 clc;
-rng(4);
-%% Generating Clusters
-% Class A
-mu_A = [5 10];
-cov_A = [8 0; 0 4];
-A = mvnrnd(mu_A, cov_A, 200);
-
-% Class B
-mu_B = [10 15];
-cov_B = [8 0; 0 4];
-B = mvnrnd(mu_B, cov_B, 200);
-
-mu_C = [5 10];
-cov_C = [8 4; 4 40];
-C = mvnrnd(mu_C, cov_C, 100);
-
-% Class D
-mu_D = [15 10];
-cov_D = [8 0; 0 8];
-D = mvnrnd(mu_D, cov_D, 200);
-
-% Class E
-mu_E = [10 5];
-cov_E = [10 -5; -5 20];
-E = mvnrnd(mu_E, cov_E, 150);
+% If classes are not present please run clusters.m
 %% Discretize the feature space
 N = 36;
 M = 36;
@@ -32,8 +7,8 @@ dt = 0.1;
 
 x_vector = -7:dt:N;
 y_vector = -7:dt:M;
-featureSpaceAB = zeros(length(x_vector), length(y_vector));
-featureSpaceCDE = zeros(length(x_vector), length(y_vector));
+featureSpaceAB_KNN = zeros(length(x_vector), length(y_vector));
+featureSpaceCDE_KNN = zeros(length(x_vector), length(y_vector));
 
 k = 5;
 
@@ -51,23 +26,23 @@ for i=1:length(x_vector)
         min_dCDE = min([d_pos_C  d_pos_D  d_pos_E]);
         
         if min_dAB == d_pos_A
-            featureSpaceAB(i,j) = 1;
+            featureSpaceAB_KNN(i,j) = 1;
         elseif min_dAB == d_pos_B 
-            featureSpaceAB(i,j) = 2;
+            featureSpaceAB_KNN(i,j) = 2;
         end
         
         if min_dCDE == d_pos_C
-            featureSpaceCDE(i,j) = 1;
+            featureSpaceCDE_KNN(i,j) = 1;
         elseif min_dCDE == d_pos_D 
-            featureSpaceCDE(i,j) = 2;
+            featureSpaceCDE_KNN(i,j) = 2;
         elseif min_dCDE == d_pos_E
-            featureSpaceCDE(i,j) = 3;
+            featureSpaceCDE_KNN(i,j) = 3;
         end
     end
 end
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceAB')
+contourf(x_vector, y_vector, featureSpaceAB_KNN')
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -78,10 +53,10 @@ hold on;
 plot_ellipse(cov_B, mu_B);
 hold on;
 title('Plot for Class A and Class B')
-legend('', 'Class A','Class B')
+legend('KNN Boundary', 'Class A','Class B')
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceCDE')
+contourf(x_vector, y_vector, featureSpaceCDE_KNN')
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
@@ -96,12 +71,10 @@ hold on;
 plot_ellipse(cov_E, mu_E);
 hold on;
 title('Plot for Class C, Class D, Class E')
-legend('', 'Class C','Class D', 'Class E')
-
-
+legend('KNN Boundary', 'Class C','Class D', 'Class E')
 
 %% ERROR CALCULATION STUFF
-% Random Speed value
+% Random Seed value
 rng(7);
 
 X_A = mvnrnd(mu_A, cov_A, 200);
@@ -117,9 +90,9 @@ listBA = 0;
 listAB = 0;
 listBB = 0;
 
-class = X_B;
-ac = 'B';
-nac = 'A';
+class = X_B; % Switch this class to the current class
+ac = 'B'; % Should be same as class
+nac = 'A'; % Should be the opposite class
 
 k = 5;
 
@@ -158,7 +131,7 @@ listCC = 0;
 listCD = 0;
 listCE = 0;
 
-class = X_D;
+class = X_D; % Follow the same idea as above
 ac = 'D';
 nac = 'C';
 nac2 = 'E';
@@ -169,25 +142,11 @@ for i=1:length(class)
     pos = class(i,:);
     actual = ''; current = '';
     
-    %d_pos_C = KNN( pos, k, C );
-    %d_pos_D = KNN( pos, k, D );
-    %d_pos_E = KNN( pos, k, E );
-    
     d_pos_xC = KNN( pos, k, X_C );
     d_pos_xD = KNN( pos, k, X_D );
     d_pos_xE = KNN( pos, k, X_E );
     
-    %minActual = min([d_pos_C  d_pos_D  d_pos_E]);
     minCurrent = min([d_pos_xC  d_pos_xD  d_pos_xE]);
-    
-%     if minActual == d_pos_C
-%         actual = ac;
-%     elseif minActual == d_pos_D
-%         actual = nac;
-%     elseif minActual == d_pos_E
-%         actual = nac2;
-%     end
-%     
     if minCurrent == d_pos_xC
         current = ac;
     elseif minCurrent == d_pos_xD

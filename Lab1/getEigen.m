@@ -1,3 +1,4 @@
+% Proof that I tried to do Eigen and failed
 function[eigenValues, eigenVectors]  =  getEigen( S )
     syms L
     x_1 = sym('x_1', [2 1]);

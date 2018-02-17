@@ -1,32 +1,5 @@
-clear all; close all;
 clc;
-rng default;
-
-%% Generating Clusters
-% Class A
-mu_A = [5 10];
-cov_A = [8 0; 0 4];
-A = mvnrnd(mu_A, cov_A, 200);
-
-% Class B
-mu_B = [10 15];
-cov_B = [8 0; 0 4];
-B = mvnrnd(mu_B, cov_B, 200);
-
-mu_C = [5 10];
-cov_C = [8 4; 4 40];
-C = mvnrnd(mu_C, cov_C, 100);
-
-% Class D
-mu_D = [15 10];
-cov_D = [8 0; 0 8];
-D = mvnrnd(mu_D, cov_D, 200);
-
-% Class E
-mu_E = [10 5];
-cov_E = [10 -5; -5 20];
-E = mvnrnd(mu_E, cov_E, 150);
-
+% If classes are not present please run clusters.m
 %% Nearest Neighbor
 N = 36;
 M = 36;
@@ -35,8 +8,8 @@ dt = 0.1;
 x_vector = -7:dt:N;
 y_vector = -7:dt:M;
 
-featureSpaceAB = zeros(length(x_vector), length(y_vector));
-featureSpaceCDE = zeros(length(x_vector), length(y_vector));
+featureSpaceAB_NN = zeros(length(x_vector), length(y_vector));
+featureSpaceCDE_NN = zeros(length(x_vector), length(y_vector));
 
 for i=1:length(x_vector)
     for j = 1:length(y_vector)
@@ -52,17 +25,17 @@ for i=1:length(x_vector)
         min_dCDE = min([d_pos_C  d_pos_D  d_pos_E]);
 
         if min_dAB == d_pos_A
-            featureSpaceAB(i,j) = 1;
+            featureSpaceAB_NN(i,j) = 1;
         elseif min_dAB == d_pos_B
-            featureSpaceAB(i,j) = 2;
+            featureSpaceAB_NN(i,j) = 2;
         end
         
         if min_dCDE == d_pos_C
-            featureSpaceCDE(i,j) = 1;
+            featureSpaceCDE_NN(i,j) = 1;
         elseif min_dCDE == d_pos_D 
-            featureSpaceCDE(i,j) = 2;
+            featureSpaceCDE_NN(i,j) = 2;
         elseif min_dCDE == d_pos_E
-            featureSpaceCDE(i,j) = 3;
+            featureSpaceCDE_NN(i,j) = 3;
         end
     end
 end
@@ -70,7 +43,7 @@ end
 
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceAB')
+contourf(x_vector, y_vector, featureSpaceAB_NN')
 hold on
 scatter(A(:,1), A(:,2), 'filled')
 hold on;
@@ -84,7 +57,7 @@ title('NN Boundary for Class A and Class B')
 legend('Boundary', 'Class A','Class B')
 %%
 figure;
-contourf(x_vector, y_vector, featureSpaceCDE')
+contourf(x_vector, y_vector, featureSpaceCDE_NN')
 hold on
 scatter(C(:,1), C(:,2), 'filled')
 hold on;
@@ -158,6 +131,10 @@ listCD = 0;
 listCE = 0;
 
 class = X_E;
+
+ac = 'E';
+nac = 'C';
+nac2 = 'D';
 
 for i=1:length(class)
     pos = class(i,:);
