@@ -75,9 +75,33 @@ title('NN Boundary for Class C, Class D, Class E')
 legend('Boundary','Class C','Class D', 'Class E')
 
 %% ERROR CALCULATION STUFF
-rng(2);
-X_A = mvnrnd(mu_A, cov_A, 200);
-X_B = mvnrnd(mu_B, cov_B, 200);
+% Generating Testing data
+% Random Seed value
+seed = 2; % Set -1 for default
+% Class A
+mu_A = [5 10];
+cov_A = [8 0; 0 4];
+X_A = getScatter( cov_A, mu_A, 200, seed );
+
+% Class B
+mu_B = [10 15];
+cov_B = [8 0; 0 4];
+X_B = getScatter( cov_B, mu_B, 200, seed );
+
+% Class C
+mu_C = [5 10];
+cov_C = [8 4; 4 40];
+X_C = getScatter( cov_C, mu_C, 100, seed );
+
+% Class D
+mu_D = [15 10];
+cov_D = [8 0; 0 8];
+X_D = getScatter( cov_D, mu_D, 200, seed );
+
+% Class E
+mu_E = [10 5];
+cov_E = [10 -5; -5 20];
+X_E = getScatter( cov_E, mu_E, 150, seed );
 
 %%
 listAA = 0;
@@ -122,9 +146,6 @@ P_A = listAB/(listAA + listAB)
 % P_B = listBA/(listBB + listBA)
 
 %% For Classes C, D and E
-X_C = mvnrnd(mu_C, cov_C, 100);
-X_D = mvnrnd(mu_D, cov_D, 200);
-X_E = mvnrnd(mu_E, cov_E, 150);
 
 listCC = 0;
 listCD = 0;
