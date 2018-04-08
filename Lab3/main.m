@@ -5,6 +5,20 @@ cloth_im = readim('cloth.im');
 imagesc(cloth_im) ;
 colormap(gray) ;
 fts = load('feat.mat');
+
+%% Labelled Classification - MICD
+f2 = fts.f2;
+f2t = fts.f2t;
+f8 = fts.f8;
+f8t = fts.f8t;
+f32 = fts.f32;
+f32t = fts.f32t;
+
+[accuracy2, cm2] = MICD(f2, f2t)
+[accuracy8, cm8] = MICD(f8, f8t)
+[accuracy32, cm32] = MICD(f32, f32t)
+
+
 %%
 pts = fts.f32;
 figure;
@@ -19,7 +33,8 @@ plot(im1(1,:), im1(2,:), '*r');
 hold on;
 plot(im2(1,:), im2(2,:), '*b');
 % Use iteration now
-%% Run K-mean
+
+%% Unlabelled Clustering - Run K-mean
 K = 10;
 data = pts(1:2,:)';
 
