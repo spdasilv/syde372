@@ -14,11 +14,25 @@ f8t = fts.f8t;
 f32 = fts.f32;
 f32t = fts.f32t;
 
-[accuracy2, cm2] = MICD(f2, f2t)
-[accuracy8, cm8] = MICD(f8, f8t)
-[accuracy32, cm32] = MICD(f32, f32t)
+[accuracy2, cm2] = MICD(f2, f2t);
+[accuracy8, cm8] = MICD(f8, f8t);
+[accuracy32, cm32] = MICD(f32, f32t);
 
+%% Image Classification & Segmentation
+multf8 = fts.multf8;
 
+cimage = MICD_p4(f8, multf8);
+
+imagesc(fts.multim);
+figure;
+
+imagesc(cimage);
+cmap = jet(10); % Assign colormap
+colormap(cmap)
+hold on
+L = line(ones(10),ones(10), 'LineWidth',2); % Generate line 
+set(L,{'color'},mat2cell(cmap,ones(1,10),3)); % Set the colors according to cmap
+legend('Cloth','Cotton','Grass','Pigskin','Wood','Cork','Paper','Stone','Raiffa','Face')    
 %%
 pts = fts.f32;
 figure;
