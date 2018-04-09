@@ -1,6 +1,6 @@
 function updated_prot = RunKMeans( data, K )
     %% Define Seed
-    % rng(10,'twister') 
+    rng(10,'twister') 
     %% Sample points from the dataset
     initial = datasample(data, K, 'Replace', false);
     %% Run K Means
